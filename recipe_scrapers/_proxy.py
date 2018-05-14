@@ -1,0 +1,42 @@
+import grequests
+from lxml.html import fromstring
+from fake_useragent import UserAgent
+
+proxy_list_url = 'https://free-proxy-list.net/'
+
+
+def get_proxies(verbose=False):
+
+    if verbose:
+        print "retriving updated proxy list...",
+    url = proxy_list_url
+    rs = [grequests.get(url)]
+    response = grequests.map(rs)[0]
+    parser = fromstring(response.text)
+
+    proxies = set()
+    for i in parser.xpath('//tbody/tr'):
+        if i.xpath('.//td[7][contains(text(),"yes")]'):
+
+            proxy = ":".join([
+                i.xpath('.//td[1]/text()')[0],
+                i.xpath('.//td[2]/text()')[0]])
+            proxies.add(proxy)
+
+    if verbose:
+        print "Found %s avaliable proxies." % len(proxies)
+    return list(proxies)
+
+
+def get_user_agents_generator(verbose=False):
+    if verbose:
+        print "retriving updated user-agent list...",
+
+    ua = UserAgent()
+    ua.update()
+
+    if verbose:
+        print "Done."
+
+    return ua
+

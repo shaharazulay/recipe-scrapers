@@ -1,6 +1,6 @@
 import grequests
+import random
 import re
-from fake_useragent import UserAgent
 
 from .allrecipes import AllRecipes
 from .bbcfood import BBCFood
@@ -25,6 +25,8 @@ from .thepioneerwoman import ThePioneerWoman
 from .thevintagemixer import TheVintageMixer
 from .twopeasandtheirpod import TwoPeasAndTheirPod
 from .whatsgabycooking import WhatsGabyCooking
+
+import _proxy as proxy_tools
 
 
 SCRAPERS = {
@@ -53,11 +55,13 @@ SCRAPERS = {
     WhatsGabyCooking.host(): WhatsGabyCooking,
 }
 
+_get_headers = lambda user_agent: {
+    'User-Agent': user_agent
+}
 
-ua = UserAgent()
-
-_get_headers = lambda : {
-    'User-Agent': ua.random
+_get_proxy = lambda proxy: {
+    'http': proxy,
+    'https': proxy
 }
 
 
@@ -78,19 +82,27 @@ def url_path_to_dict(path):
     return url_dict
 
 
-def scrap_me(url_paths, timeout=10):
-    url_paths = [u.replace('://www.', '://') for u in url_paths]
-    rs = (
-        grequests.get(
-            u,
-            headers=_get_headers(),
-            timeout=timeout)
-        for u in url_paths)
-    resps = grequests.map(rs)
+class AsyncScraper(object):
 
-    return [
-        SCRAPERS[url_path_to_dict(u)['host']](r)
-        for u, r in zip(url_paths, resps)]
+    def init(self, verbose=True):
+        self._proxy_list = proxy_tools.get_proxies(verbose=verbose)
+        self._ua_generator = proxy_tools.get_user_agents_generator(verbose=verbose)
+        
+    def get(self, url_paths, timeout=10):
+      
+        url_paths = [u.replace('://www.', '://') for u in url_paths]
+        rs = (
+            grequests.get(
+                u,
+                headers=_get_headers(self._ua_generator.random),
+                proxies=_get_proxy(random.choice(self._proxy_list)),
+                timeout=timeout)
+            for u in url_paths)
+        resps = grequests.map(rs)
+
+        return [
+            SCRAPERS[url_path_to_dict(u)['host']](r)
+            for u, r in zip(url_paths, resps)]
 
 
-__all__ = ['scrap_me']
+__all__ = ['AsyncScraper']
