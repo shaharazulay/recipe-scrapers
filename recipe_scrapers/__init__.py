@@ -1,5 +1,6 @@
 import grequests
 import re
+from fake_useragent import UserAgent
 
 from .allrecipes import AllRecipes
 from .bbcfood import BBCFood
@@ -53,6 +54,13 @@ SCRAPERS = {
 }
 
 
+ua = UserAgent()
+
+_get_headers = lambda : {
+    'User-Agent': ua.random
+}
+
+
 def url_path_to_dict(path):
     pattern = (r'^'
                r'((?P<schema>.+?)://)?'
@@ -72,7 +80,12 @@ def url_path_to_dict(path):
 
 def scrap_me(url_paths, timeout=10):
     url_paths = [u.replace('://www.', '://') for u in url_paths]
-    rs = (grequests.get(u, timeout=timeout) for u in url_paths)
+    rs = (
+        grequests.get(
+            u,
+            headers=_get_headers(),
+            timeout=timeout)
+        for u in url_paths)
     resps = grequests.map(rs)
 
     return [
