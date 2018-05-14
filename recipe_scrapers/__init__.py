@@ -88,7 +88,7 @@ class AsyncScraper(object):
         self._proxy_list = proxy_tools.get_proxies(verbose=verbose)
         self._ua_generator = proxy_tools.get_user_agents_generator(verbose=verbose)
         
-    def get(self, url_paths, timeout=10):
+    def get(self, url_paths, timeout=10, stream=False):
       
         url_paths = [u.replace('://www.', '://') for u in url_paths]
         rs = (
@@ -96,13 +96,16 @@ class AsyncScraper(object):
                 u,
                 headers=_get_headers(self._ua_generator.random),
                 proxies=_get_proxy(random.choice(self._proxy_list)),
-                timeout=timeout)
+                timeout=timeout,
+                stream=stream)
             for u in url_paths)
         resps = grequests.map(rs)
 
-        return [
+        results =  [
             SCRAPERS[url_path_to_dict(u)['host']](r)
             for u, r in zip(url_paths, resps)]
 
+        return results
+    
 
 __all__ = ['AsyncScraper']
