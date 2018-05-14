@@ -9,42 +9,24 @@ class TastyKitchen(AbstractScraper):
         return 'tastykitchen.com'
 
     def title(self):
-        return self.soup.find(
-            'h1',
-            {'itemprop': 'name'}
-        ).get_text()
+        return self.soup.find('h1', {'itemprop': 'name'}).get_text()
 
     def total_time(self):
-        return sum([
-            get_minutes(self.soup.find(
-                'time',
-                {'itemprop': 'prepTime'})
-            ),
-
-            get_minutes(self.soup.find(
-                'time',
-                {'itemprop': 'cookTime'})
-            )
-        ])
+        return get_minutes(self.soup.find('time', {'itemprop': 'prepTime'})) +\
+               get_minutes(self.soup.find('time', {'itemprop': 'cookTime'}))
 
     def ingredients(self):
-        ingredients = self.soup.find(
-            'ul',
-            {'class': "ingredients"}
-        ).findAll('li')
+        ingredients_html = self.soup.find('ul', {'class': "ingredients"}).findAll('li')
 
         return [
             normalize_string(ingredient.get_text())
-            for ingredient in ingredients
+            for ingredient in ingredients_html
         ]
 
     def instructions(self):
-        instructions = self.soup.find(
-            'span',
-            {'itemprop': 'instructions'}
-        ).findAll('p')
+        directions_html = self.soup.find('span', {'itemprop': 'instructions'}).findAll('p')
 
         return '\n'.join([
             normalize_string(direction.get_text())
-            for direction in instructions
+            for direction in directions_html
         ])

@@ -1,25 +1,24 @@
+import grequests
 import re
 
 from .allrecipes import AllRecipes
 from .bbcfood import BBCFood
 from .bbcgoodfood import BBCGoodFood
 from .bonappetit import BonAppetit
+from .budgetbytes import BudgetBytes
 from .closetcooking import ClosetCooking
 from .cookstr import Cookstr
 from .epicurious import Epicurious
 from .finedininglovers import FineDiningLovers
-from .foodnetwork import FoodNetwork
 from .foodrepublic import FoodRepublic
-from .giallozafferano import GialloZafferano
 from .hundredandonecookbooks import HundredAndOneCookbooks
-from .inspiralized import Inspiralized
 from .jamieoliver import JamieOliver
 from .mybakingaddiction import MyBakingAddiction
-from .nihhealthyeating import NIHHealthyEating
 from .paninihappy import PaniniHappy
 from .realsimple import RealSimple
 from .simplyrecipes import SimplyRecipes
 from .steamykitchen import SteamyKitchen
+from .taste import Taste
 from .tastykitchen import TastyKitchen
 from .thepioneerwoman import ThePioneerWoman
 from .thevintagemixer import TheVintageMixer
@@ -32,22 +31,20 @@ SCRAPERS = {
     BBCFood.host(): BBCFood,
     BBCGoodFood.host(): BBCGoodFood,
     BonAppetit.host(): BonAppetit,
+    BudgetBytes.host(): BudgetBytes,
     ClosetCooking.host(): ClosetCooking,
     Cookstr.host(): Cookstr,
     Epicurious.host(): Epicurious,
     FineDiningLovers.host(): FineDiningLovers,
-    FoodNetwork.host(): FoodNetwork,
     FoodRepublic.host(): FoodRepublic,
-    GialloZafferano.host(): GialloZafferano,
     HundredAndOneCookbooks.host(): HundredAndOneCookbooks,
-    Inspiralized.host(): Inspiralized,
     JamieOliver.host(): JamieOliver,
     MyBakingAddiction.host(): MyBakingAddiction,
-    NIHHealthyEating.host(): NIHHealthyEating,
     PaniniHappy.host(): PaniniHappy,
     RealSimple.host(): RealSimple,
     SimplyRecipes.host(): SimplyRecipes,
     SteamyKitchen.host(): SteamyKitchen,
+    Taste.host(): Taste,
     TastyKitchen.host(): TastyKitchen,
     ThePioneerWoman.host(): ThePioneerWoman,
     TheVintageMixer.host(): TheVintageMixer,
@@ -73,20 +70,14 @@ def url_path_to_dict(path):
     return url_dict
 
 
-class WebsiteNotImplementedError(NotImplementedError):
-    '''Error for when the website is not supported by this library.'''
-    pass
+def scrap_me(url_paths, timeout=10):
+    url_paths = [u.replace('://www.', '://') for u in url_paths]
+    rs = (grequests.get(u, timeout=timeout) for u in url_paths)
+    resps = grequests.map(rs)
+
+    return [
+        SCRAPERS[url_path_to_dict(u)['host']](r)
+        for u, r in zip(url_paths, resps)]
 
 
-def scrape_me(url_path):
-    host_name = url_path_to_dict(url_path.replace('://www.', '://'))['host']
-    try:
-        scraper = SCRAPERS[host_name]
-    except KeyError:
-        raise WebsiteNotImplementedError(
-            "Website ({}) is not supported".format(host_name))
-
-    return scraper(url_path)
-
-
-__all__ = ['scrape_me']
+__all__ = ['scrap_me']

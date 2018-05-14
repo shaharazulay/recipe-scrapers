@@ -9,35 +9,23 @@ class PaniniHappy(AbstractScraper):
         return 'paninihappy.com'
 
     def title(self):
-        return self.soup.find(
-            'h1',
-            {'class': 'entry-title'}
-        ).get_text()
+        return self.soup.find('h1', {'class': 'entry-title'}).get_text()
 
     def total_time(self):
-        return get_minutes(self.soup.find(
-            'span',
-            {'class': 'duration'})
-        )
+        return get_minutes(self.soup.find('span', {'class': 'duration'}))
 
     def ingredients(self):
-        ingredients = self.soup.findAll(
-            'li',
-            {'class': "ingredient"}
-        )
+        ingredients_html = self.soup.findAll('li', {'class': "ingredient"})
 
         return [
             normalize_string(ingredient.get_text())
-            for ingredient in ingredients
+            for ingredient in ingredients_html
         ]
 
     def instructions(self):
-        instructions = self.soup.findAll(
-            'li',
-            {'class': 'instruction'}
-        )
+        instructions_html = self.soup.findAll('li', {'class': 'instruction'})
 
         return '\n'.join([
             normalize_string(instruction.get_text())
-            for instruction in instructions
+            for instruction in instructions_html
         ])

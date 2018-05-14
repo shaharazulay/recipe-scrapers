@@ -12,29 +12,21 @@ class RealSimple(AbstractScraper):
         return self.soup.find('h1').get_text(strip=True)
 
     def total_time(self):
-        return get_minutes(self.soup.findAll(
-            'div',
-            {'class': 'recipe-meta-item'}
-        )[1])
+        return get_minutes(self.soup.find('time', {'itemprop': 'totalTime'}))
 
     def ingredients(self):
-        ingredients = self.soup.find(
-            'div',
-            {'class': "ingredients"}
-        ).findAll('li')
+        ingredients_html = self.soup.findAll('ol', {'class': "ingredient-list"})[0]
 
         return [
             normalize_string(ingredient.get_text())
-            for ingredient in ingredients
+            for ingredient in ingredients_html.findAll('span', {'itemprop': 'ingredients'})
         ]
 
     def instructions(self):
-        instructions = self.soup.findAll(
-            'div',
-            {'class': 'step'}
-        )
+        instructions_html = self.soup.find('section', {'itemprop': 'recipeInstructions'})
 
         return '\n'.join([
-            normalize_string(instruction.find('p').get_text())
-            for instruction in instructions
+            normalize_string(instruction.get_text())
+            for instruction in instructions_html.findAll('li')
         ])
+    

@@ -1,5 +1,5 @@
 from ._abstract import AbstractScraper
-from ._utils import normalize_string
+from ._utils import get_minutes, normalize_string
 
 
 class BonAppetit(AbstractScraper):
@@ -9,32 +9,31 @@ class BonAppetit(AbstractScraper):
         return 'bonappetit.com'
 
     def title(self):
-        return self.soup.find(
-            'h1',
-            {'itemprop': 'name'}
-        ).get_text()
+        return self.soup.find('h1', {'itemprop': 'name'}).get_text()
 
     def total_time(self):
-        return 0
+        return get_minutes(self.soup.find('span', {'itemprop': 'totalTime'}))
 
     def ingredients(self):
-        ingredients = self.soup.findAll(
-            'li',
-            {'class': "ingredient"}
-        )
+        ingredients_html = self.soup.findAll('span', {'itemprop': "ingredients"})
 
         return [
             normalize_string(ingredient.get_text())
-            for ingredient in ingredients
+            for ingredient in ingredients_html
         ]
 
     def instructions(self):
-        instructions = self.soup.find(
-            'div',
-            {'class': 'steps-wrapper'}
-        ).findAll('li')
+        instructions_html = self.soup.find('div', {'class': 'prep-steps'}).findAll('li')
 
         return '\n'.join([
             normalize_string(instruction.get_text())
-            for instruction in instructions
+            for instruction in instructions_html
         ])
+
+    def categories(self):
+        categories_html = self.soup.findAll('meta', {'name': 'keywords'})
+        
+        return [
+            normalize_string(c) for category in categories_html
+            for c in category['content'].split(',')
+        ]
