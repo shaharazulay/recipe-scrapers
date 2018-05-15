@@ -1,6 +1,9 @@
-import grequests
+#import grequests
 import random
 import re
+import time
+from requests_futures.sessions import FuturesSession
+import datetime
 
 from .allrecipes import AllRecipes
 from .bbcfood import BBCFood
@@ -26,7 +29,7 @@ from .thevintagemixer import TheVintageMixer
 from .twopeasandtheirpod import TwoPeasAndTheirPod
 from .whatsgabycooking import WhatsGabyCooking
 
-import _proxy as proxy_tools
+#from ._proxy import get_proxies, get_user_agents_generator
 
 
 SCRAPERS = {
@@ -84,27 +87,22 @@ def url_path_to_dict(path):
 
 class AsyncScraper(object):
 
-    def init(self, verbose=True):
-        self._proxy_list = proxy_tools.get_proxies(verbose=verbose)
-        self._ua_generator = proxy_tools.get_user_agents_generator(verbose=verbose)
+    def init(self, verbose=True, max_workers=10):
+        self._session = FuturesSession(max_workers=max_workers)
         
-    def get(self, url_paths, timeout=10, stream=False):
-      
-        url_paths = [u.replace('://www.', '://') for u in url_paths]
-        rs = (
-            grequests.get(
-                u,
-                headers=_get_headers(self._ua_generator.random),
-                proxies=_get_proxy(random.choice(self._proxy_list)),
-                timeout=timeout,
-                stream=stream)
-            for u in url_paths)
-        resps = grequests.map(rs)
+    def get(self, url_paths, timeout=300, stream=False):
+        print(datetime.datetime.now())
+        futures = [self._session.get(url,
+                                     timeout=timeout,
+                                     stream=stream) for url in url_paths]
+        time.sleep(20)
+        resps = [future.result() for future in futures]
 
-        results =  [
+        results = [
             SCRAPERS[url_path_to_dict(u)['host']](r)
             for u, r in zip(url_paths, resps)]
 
+        print(datetime.datetime.now())
         return results
     
 

@@ -8,7 +8,7 @@ proxy_list_url = 'https://free-proxy-list.net/'
 def get_proxies(verbose=False):
 
     if verbose:
-        print "retriving updated proxy list...",
+        print("retriving updated proxy list...")
     url = proxy_list_url
     rs = [grequests.get(url)]
     response = grequests.map(rs)[0]
@@ -24,19 +24,24 @@ def get_proxies(verbose=False):
             proxies.add(proxy)
 
     if verbose:
-        print "Found %s avaliable proxies." % len(proxies)
+        print("Found %s avaliable proxies." % len(proxies))
     return list(proxies)
+
+
+__all__ = ['get_proxies']
 
 
 def get_user_agents_generator(verbose=False):
     if verbose:
-        print "retriving updated user-agent list...",
+        print("retriving updated user-agent list...")
 
-    ua = UserAgent()
+    ua = UserAgent(verify_ssl=False)
     ua.update()
 
     if verbose:
-        print "Done."
+        print("Done.")
 
     return ua
 
+
+__all__ += ['get_user_agents_generator']
