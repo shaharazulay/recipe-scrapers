@@ -1,4 +1,4 @@
-import grequests
+import requests
 from lxml.html import fromstring
 from fake_useragent import UserAgent
 
@@ -10,8 +10,8 @@ def get_proxies(verbose=False):
     if verbose:
         print("retriving updated proxy list...")
     url = proxy_list_url
-    rs = [grequests.get(url)]
-    response = grequests.map(rs)[0]
+    response = requests.get(url)
+    
     parser = fromstring(response.text)
 
     proxies = set()
@@ -31,11 +31,11 @@ def get_proxies(verbose=False):
 __all__ = ['get_proxies']
 
 
-def get_user_agents_generator(verbose=False):
+def get_user_agents_generator(verbose=False, verify_ssl=False):
     if verbose:
         print("retriving updated user-agent list...")
 
-    ua = UserAgent(verify_ssl=False)
+    ua = UserAgent(verify_ssl=verify_ssl)
     ua.update()
 
     if verbose:

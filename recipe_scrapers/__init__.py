@@ -1,7 +1,5 @@
-#import grequests
 import random
 import re
-import time
 from requests_futures.sessions import FuturesSession
 import requests
 import datetime
@@ -119,7 +117,7 @@ class AsyncScraper(object):
         for future in futures:
             try:
                 resp = future.result()
-            except requests.ConnectionError, e:
+            except requests.ConnectionError as e:
                 resp = None
             resps.append(resp)
 
