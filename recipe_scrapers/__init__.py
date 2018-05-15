@@ -3,6 +3,7 @@ import random
 import re
 import time
 from requests_futures.sessions import FuturesSession
+import requests
 import datetime
 
 from .allrecipes import AllRecipes
@@ -29,7 +30,7 @@ from .thevintagemixer import TheVintageMixer
 from .twopeasandtheirpod import TwoPeasAndTheirPod
 from .whatsgabycooking import WhatsGabyCooking
 
-#from ._proxy import get_proxies, get_user_agents_generator
+from ._proxy import get_proxies, get_user_agents_generator
 
 
 SCRAPERS = {
@@ -89,27 +90,44 @@ class AsyncScraper(object):
 
     def init(self, verbose=True, max_workers=10):
         self._max_workers = max_workers
+        self._proxy_list = get_proxies(verbose=True)
+        self._ua_generator = get_user_agents_generator(verbose=True)
         
-    def get(self, url_paths, timeout=300, stream=False):
+    def get(self, url_paths, timeout=300, stream=False, use_proxy=False):
         print(datetime.datetime.now())
 
         session = FuturesSession(max_workers=self._max_workers)
-
-        futures = [
-            session.get(
-                url,
-                timeout=timeout,
-                stream=stream)
-            for url in url_paths]
         
-        resps = [future.result() for future in futures]
+        if use_proxy:
+            futures = [
+                session.get(
+                    url,
+                    headers=_get_headers(self._ua_generator.random),
+                    proxies=_get_proxy(random.choice(self._proxy_list)),
+                    timeout=timeout,
+                    stream=stream)
+                for url in url_paths]
+        else:
+            futures = [
+                session.get(
+                    url,
+                    timeout=timeout,
+                    stream=stream)
+                for url in url_paths]
+
+        resps = []
+        for future in futures:
+            try:
+                resp = future.result()
+            except requests.ConnectionError, e:
+                resp = None
+            resps.append(resp)
 
         results = [
             SCRAPERS[url_path_to_dict(u)['host']](r)
             for u, r in zip(url_paths, resps)]
 
         session.close()
-        
         print(datetime.datetime.now())
         return results
 
