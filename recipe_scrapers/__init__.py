@@ -88,22 +88,30 @@ def url_path_to_dict(path):
 class AsyncScraper(object):
 
     def init(self, verbose=True, max_workers=10):
-        self._session = FuturesSession(max_workers=max_workers)
+        self._max_workers = max_workers
         
     def get(self, url_paths, timeout=300, stream=False):
         print(datetime.datetime.now())
-        futures = [self._session.get(url,
-                                     timeout=timeout,
-                                     stream=stream) for url in url_paths]
-        time.sleep(20)
+
+        session = FuturesSession(max_workers=self._max_workers)
+
+        futures = [
+            session.get(
+                url,
+                timeout=timeout,
+                stream=stream)
+            for url in url_paths]
+        
         resps = [future.result() for future in futures]
 
         results = [
             SCRAPERS[url_path_to_dict(u)['host']](r)
             for u, r in zip(url_paths, resps)]
 
+        session.close()
+        
         print(datetime.datetime.now())
         return results
-    
+
 
 __all__ = ['AsyncScraper']

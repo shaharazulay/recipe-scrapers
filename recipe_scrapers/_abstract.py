@@ -17,7 +17,6 @@ class AbstractScraper(object):
             self._valid = False
         else:
             self.soup = BeautifulSoup(resp.text, "html.parser")
-            resp.close()
             
     def is_valid(self):
         return self._valid
