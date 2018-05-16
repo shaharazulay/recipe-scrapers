@@ -119,7 +119,7 @@ class AsyncScraper(object):
         for future in futures:
             try:
                 resp = future.result()
-            except requests.ConnectionError, e:
+            except (requests.ConnectionError, requests.ReadTimeout), e:
                 resp = None
             resps.append(resp)
 
