@@ -1,7 +1,5 @@
-#import grequests
 import random
 import re
-import time
 from requests_futures.sessions import FuturesSession
 import requests
 import datetime
