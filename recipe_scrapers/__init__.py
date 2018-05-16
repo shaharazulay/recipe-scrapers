@@ -113,21 +113,20 @@ class AsyncScraper(object):
                     stream=stream)
                 for url in url_paths]
 
-        resps = []
-        for future in futures:
+        scrapers = []
+        for f, u in zip(futures, url_paths):
             try:
-                resp = future.result()
-            except (requests.ConnectionError, requests.ReadTimeout), e:
-                resp = None
-            resps.append(resp)
-
-        results = [
-            SCRAPERS[url_path_to_dict(u)['host']](r)
-            for u, r in zip(url_paths, resps)]
+                r = f.result()
+                s = SCRAPERS[url_path_to_dict(u)['host']](r)
+            except Exception, e:
+                # Tmp: add logging here of failure
+                print "FAILURE: %s", e
+                s = SCRAPERS[url_path_to_dict(u)['host']](None)
+            scrapers.append(s)
 
         session.close()
         print(datetime.datetime.now())
-        return results
+        return scrapers
 
 
 __all__ = ['AsyncScraper']
