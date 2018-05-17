@@ -101,7 +101,7 @@ class AsyncScraper(object):
             futures = [
                 session.get(
                     url,
-                    headers=_get_headers(self._ua_generator.random),
+                    #headers=_get_headers(self._ua_generator.random),
                     proxies=_get_proxy(random.choice(self._proxy_list)),
                     timeout=timeout,
                     stream=stream)
