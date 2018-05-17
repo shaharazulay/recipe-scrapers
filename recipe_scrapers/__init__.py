@@ -94,7 +94,7 @@ class AsyncScraper(object):
         
     def get(self, url_paths, timeout=300, stream=False, use_proxy=False):
         print(datetime.datetime.now())
-
+        url_paths = [u.replace('://www.', '://') for u in url_paths]
         session = FuturesSession(max_workers=self._max_workers)
         
         if use_proxy:
