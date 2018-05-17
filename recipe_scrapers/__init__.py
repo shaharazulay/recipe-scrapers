@@ -120,7 +120,7 @@ class AsyncScraper(object):
                 s = SCRAPERS[url_path_to_dict(u)['host']](r)
             except Exception as e:
                 # Tmp: add logging here of failure
-                print "FAILURE: %s", e
+                print("FAILURE: %s", e)
                 s = SCRAPERS[url_path_to_dict(u)['host']](None)
             scrapers.append(s)
 
