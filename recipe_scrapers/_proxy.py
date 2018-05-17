@@ -10,7 +10,7 @@ def get_proxies(verbose=False):
     if verbose:
         print("retriving updated proxy list...")
     url = proxy_list_url
-    response = requests.get(url)
+    response = requests.get(url, verify=False)
     
     parser = fromstring(response.text)
 
