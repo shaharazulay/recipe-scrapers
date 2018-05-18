@@ -16,12 +16,12 @@ def get_proxies(verbose=False):
 
     proxies = set()
     for i in parser.xpath('//tbody/tr'):
-        if i.xpath('.//td[7][contains(text(),"yes")]'):
+        if not i.xpath('.//td[7][contains(text(),"yes")]'):
 
             proxy = ":".join([
                 i.xpath('.//td[1]/text()')[0],
                 i.xpath('.//td[2]/text()')[0]])
-            proxies.add('https://' + proxy)
+            proxies.add('http://' + proxy)
 
     if verbose:
         print("Found %s avaliable proxies." % len(proxies))
