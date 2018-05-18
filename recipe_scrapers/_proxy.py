@@ -21,7 +21,7 @@ def get_proxies(verbose=False):
             proxy = ":".join([
                 i.xpath('.//td[1]/text()')[0],
                 i.xpath('.//td[2]/text()')[0]])
-            proxies.add('http://' + proxy)
+            proxies.add('https://' + proxy)
 
     if verbose:
         print("Found %s avaliable proxies." % len(proxies))
