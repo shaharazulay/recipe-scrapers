@@ -15,9 +15,19 @@ class AbstractScraper(object):
         if (resp is None) or (resp.status_code != 200):
             self.soup = None
             self._valid = False
+            self.doc = None
         else:
+            self.doc = resp.text
             self.soup = BeautifulSoup(resp.text, "html.parser")
-            
+
+    def load(self, doc):
+        self._valid = True
+        self.doc = doc
+        self.soup = BeautifulSoup(doc, "html.parser")
+
+    def content(self):
+        return self.doc
+    
     def is_valid(self):
         return self._valid
     

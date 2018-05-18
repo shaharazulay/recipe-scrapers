@@ -114,36 +114,20 @@ class AsyncScraper(object):
                     stream=stream)
                 for url in url_paths]
 
-        results = []
-        for f in futures:
+        scrapers = []
+        for f, u in zip(futures, url_paths):
             try:
                 r = f.result()
-            except Exception as e:
-                # Tmp: add logging here of failure
-                print("FAILURE: %s", e)
-                r = None
-            results.append(r)
-
-        session.close()
-        print(datetime.datetime.now())
-        return results
-
-    def create_recipe_scrapers(self, url_paths, server_responses):
-        scrapers = []
-        for r, u in zip(server_responses, url_paths):
-            try:
                 s = SCRAPERS[url_path_to_dict(u)['host']](r)
             except Exception as e:
                 # Tmp: add logging here of failure
-                print("FAILED TO CREATE SCRAPER: %s", e)
+                print("FAILURE: %s", e)
                 s = SCRAPERS[url_path_to_dict(u)['host']](None)
             scrapers.append(s)
 
+        session.close()
+        print(datetime.datetime.now())
         return scrapers
-
-    def get_recipe_scrapers(self, url_paths, timeout=300, stream=False, use_proxy=False):
-        results = self.get(url_paths, timeout=300, stream=False, use_proxy=False)
-        return self.create_recipe_scrapers(url_paths, results)
 
     
 __all__ = ['AsyncScraper']
