@@ -5,6 +5,7 @@ except:
     from urllib2 import Request
 
 from bs4 import BeautifulSoup
+from requests.models import Response
 
 
 class AbstractScraper(object):
@@ -22,10 +23,9 @@ class AbstractScraper(object):
 
     @classmethod
     def from_dump(cls, doc):
-        resp = {
-            'status_code': 200,
-            'text': doc
-        }
+        resp = Response()
+        resp.status_code = 200
+        resp.text = doc
         return cls(resp)
 
     def content(self):
