@@ -31,31 +31,32 @@ from .whatsgabycooking import WhatsGabyCooking
 from ._proxy import get_proxies, get_user_agents_generator
 
 
-SCRAPERS = {
-    AllRecipes.host(): AllRecipes,
-    BBCFood.host(): BBCFood,
-    BBCGoodFood.host(): BBCGoodFood,
-    BonAppetit.host(): BonAppetit,
-    BudgetBytes.host(): BudgetBytes,
-    ClosetCooking.host(): ClosetCooking,
-    Cookstr.host(): Cookstr,
-    Epicurious.host(): Epicurious,
-    FineDiningLovers.host(): FineDiningLovers,
-    FoodRepublic.host(): FoodRepublic,
-    HundredAndOneCookbooks.host(): HundredAndOneCookbooks,
-    JamieOliver.host(): JamieOliver,
-    MyBakingAddiction.host(): MyBakingAddiction,
-    PaniniHappy.host(): PaniniHappy,
-    RealSimple.host(): RealSimple,
-    SimplyRecipes.host(): SimplyRecipes,
-    SteamyKitchen.host(): SteamyKitchen,
-    Taste.host(): Taste,
-    TastyKitchen.host(): TastyKitchen,
-    ThePioneerWoman.host(): ThePioneerWoman,
-    TheVintageMixer.host(): TheVintageMixer,
-    TwoPeasAndTheirPod.host(): TwoPeasAndTheirPod,
-    WhatsGabyCooking.host(): WhatsGabyCooking,
-}
+SCRAPERS = {}
+
+SCRAPERS.update(dict.fromkeys(AllRecipes.host(), AllRecipes))
+SCRAPERS.update(dict.fromkeys(BBCFood.host(), BBCFood))
+SCRAPERS.update(dict.fromkeys(BBCGoodFood.host(), BBCGoodFood))
+SCRAPERS.update(dict.fromkeys(BonAppetit.host(), BonAppetit))
+SCRAPERS.update(dict.fromkeys(BudgetBytes.host(), BudgetBytes))
+SCRAPERS.update(dict.fromkeys(ClosetCooking.host(), ClosetCooking))
+SCRAPERS.update(dict.fromkeys(Cookstr.host(), Cookstr))
+SCRAPERS.update(dict.fromkeys(Epicurious.host(), Epicurious))
+SCRAPERS.update(dict.fromkeys(FineDiningLovers.host(), FineDiningLovers))
+SCRAPERS.update(dict.fromkeys(FoodRepublic.host(), FoodRepublic))
+SCRAPERS.update(dict.fromkeys(HundredAndOneCookbooks.host(), HundredAndOneCookbooks))
+SCRAPERS.update(dict.fromkeys(JamieOliver.host(), JamieOliver))
+SCRAPERS.update(dict.fromkeys(MyBakingAddiction.host(), MyBakingAddiction))
+SCRAPERS.update(dict.fromkeys(PaniniHappy.host(), PaniniHappy))
+SCRAPERS.update(dict.fromkeys(RealSimple.host(), RealSimple))
+SCRAPERS.update(dict.fromkeys(SimplyRecipes.host(), SimplyRecipes))
+SCRAPERS.update(dict.fromkeys(SteamyKitchen.host(), SteamyKitchen))
+SCRAPERS.update(dict.fromkeys(Taste.host(), Taste))
+SCRAPERS.update(dict.fromkeys(TastyKitchen.host(), TastyKitchen))
+SCRAPERS.update(dict.fromkeys(ThePioneerWoman.host(), ThePioneerWoman))
+SCRAPERS.update(dict.fromkeys(TheVintageMixer.host(), TheVintageMixer))
+SCRAPERS.update(dict.fromkeys(TwoPeasAndTheirPod.host(), TwoPeasAndTheirPod))
+SCRAPERS.update(dict.fromkeys(WhatsGabyCooking.host(), WhatsGabyCooking))
+
 
 _get_headers = lambda user_agent: {
     'User-Agent': user_agent
