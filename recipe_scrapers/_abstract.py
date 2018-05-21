@@ -20,10 +20,13 @@ class AbstractScraper(object):
             self.doc = resp.text
             self.soup = BeautifulSoup(resp.text, "html.parser")
 
-    def load(self, doc):
-        self._valid = True
-        self.doc = doc
-        self.soup = BeautifulSoup(doc, "html.parser")
+    @classmethod
+    def from_dump(cls, doc):
+        resp = {
+            'status_code': 200,
+            'text': doc
+        }
+        return cls(resp)
 
     def content(self):
         return self.doc
