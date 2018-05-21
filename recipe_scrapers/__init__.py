@@ -89,8 +89,7 @@ class AsyncScraper(object):
     def init(self, verbose=True, max_workers=10):
         self._max_workers = max_workers
         self._proxy_list = get_proxies(verbose=verbose)
-        # tmp removal of user generator
-        #self._ua_generator = get_user_agents_generator(verbose=verbose)
+        self._ua_generator = get_user_agents_generator(verbose=verbose)
         
     def get(self, url_paths, timeout=300, stream=False, use_proxy=False):
         print(datetime.datetime.now())
@@ -101,7 +100,7 @@ class AsyncScraper(object):
             futures = [
                 session.get(
                     url,
-                    #headers=_get_headers(self._ua_generator.random),
+                    headers=_get_headers(self._ua_generator.random),
                     proxies=_get_proxy(random.choice(self._proxy_list)),
                     timeout=timeout,
                     stream=stream)
