@@ -25,7 +25,7 @@ class AbstractScraper(object):
     def from_dump(cls, doc):
         resp = Response()
         resp.status_code = 200
-        resp._content = doc
+        resp._content = str(doc)
         return cls(resp)
 
     def content(self):
