@@ -9,7 +9,7 @@ class FoodNetwork(AbstractScraper):
         return ['foodnetwork.com']
 
     def title(self):
-        return self.soup.findAll('span', {'class': 'o-AssetTitle__a-HeadlineText'}).get_text()
+        return self.soup.findAll('span', {'class': 'o-AssetTitle__a-HeadlineText'})[0].get_text()
 
     def total_time(self):
         return get_minutes(self.soup.find('dd', {'class': 'o-RecipeInfo__a-Description--Total'}))
@@ -29,6 +29,7 @@ class FoodNetwork(AbstractScraper):
         return '\n'.join([
             normalize_string(instruction.get_text())
             for instruction in instructions_html
+            if instruction.get_text(strip=True) not in ('Watch how to make this recipe.', '')
         ])
 
     def categories(self):
