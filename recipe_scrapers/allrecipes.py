@@ -6,7 +6,7 @@ class AllRecipes(AbstractScraper):
 
     @classmethod
     def host(self):
-        return 'allrecipes.com'
+        return ['allrecipes.com', 'allrecipes.co.uk', 'allrecipes.asia']
 
     def title(self):
         return self.soup.find('h1').get_text()
