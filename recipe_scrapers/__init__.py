@@ -14,6 +14,7 @@ from .cookstr import Cookstr
 from .epicurious import Epicurious
 from .finedininglovers import FineDiningLovers
 from .foodrepublic import FoodRepublic
+from .foodnetwork import FoodNetwork
 from .hundredandonecookbooks import HundredAndOneCookbooks
 from .jamieoliver import JamieOliver
 from .mybakingaddiction import MyBakingAddiction
@@ -43,6 +44,7 @@ SCRAPERS.update(dict.fromkeys(Cookstr.host(), Cookstr))
 SCRAPERS.update(dict.fromkeys(Epicurious.host(), Epicurious))
 SCRAPERS.update(dict.fromkeys(FineDiningLovers.host(), FineDiningLovers))
 SCRAPERS.update(dict.fromkeys(FoodRepublic.host(), FoodRepublic))
+SCRAPERS.update(dict.fromkeys(FoodNetwork.host(), FoodNetwork))
 SCRAPERS.update(dict.fromkeys(HundredAndOneCookbooks.host(), HundredAndOneCookbooks))
 SCRAPERS.update(dict.fromkeys(JamieOliver.host(), JamieOliver))
 SCRAPERS.update(dict.fromkeys(MyBakingAddiction.host(), MyBakingAddiction))
