@@ -6,7 +6,7 @@ class Epicurious(AbstractScraper):
 
     @classmethod
     def host(self):
-        return 'epicurious.com'
+        return ['epicurious.com']
 
     def title(self):
         return self.soup.find('h1', {'itemprop': 'name'}).get_text()
