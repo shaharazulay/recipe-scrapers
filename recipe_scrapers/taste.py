@@ -6,7 +6,7 @@ class Taste(AbstractScraper):
 
     @classmethod
     def host(self):
-        return 'taste.com.au'
+        return ['taste.com.au']
 
     def title(self):
         return self.soup.find('h1').get_text()
