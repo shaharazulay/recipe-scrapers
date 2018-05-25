@@ -38,4 +38,8 @@ class AllRecipes(AbstractScraper):
             normalize_string(category['content'])
             for category in categories_html
         ]
+
+    def rating(self):
+        rating_html = self.soup.find('meta', {'property': 'og:rating'})
+        return rating_html['content']
     
