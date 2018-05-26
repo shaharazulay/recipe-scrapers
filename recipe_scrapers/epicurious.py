@@ -38,3 +38,6 @@ class Epicurious(AbstractScraper):
             for c in category['content'].split(',')
         ]
 
+    def rating(self):
+        return self.soup.find('span', {'class': 'rating'}).get_text()
+        
