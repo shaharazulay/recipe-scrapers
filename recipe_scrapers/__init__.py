@@ -4,7 +4,7 @@ from requests_futures.sessions import FuturesSession
 import requests
 import datetime
 
-from .allrecipes import AllRecipes
+from .allrecipes import AllRecipes, AllRecipesUKAsia
 from .bbcfood import BBCFood
 from .bbcgoodfood import BBCGoodFood
 from .bonappetit import BonAppetit
@@ -35,6 +35,7 @@ from ._proxy import get_proxies, get_user_agents_generator
 SCRAPERS = {}
 
 SCRAPERS.update(dict.fromkeys(AllRecipes.host(), AllRecipes))
+SCRAPERS.update(dict.fromkeys(AllRecipesUKAsia.host(), AllRecipesUKAsia))
 SCRAPERS.update(dict.fromkeys(BBCFood.host(), BBCFood))
 SCRAPERS.update(dict.fromkeys(BBCGoodFood.host(), BBCGoodFood))
 SCRAPERS.update(dict.fromkeys(BonAppetit.host(), BonAppetit))
