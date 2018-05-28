@@ -83,6 +83,6 @@ class AllRecipesUKAsia(AbstractScraper):
         return categories
 
     def rating(self):
-        rating_html = self.soup.find('meta', {'property': 'og:rating'})
+        rating_html = self.soup.find('meta', {'itemprop': 'ratingValue'})
         return rating_html['content']
 
