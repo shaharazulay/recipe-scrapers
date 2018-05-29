@@ -21,6 +21,7 @@ from .jamieoliver import JamieOliver
 from .mybakingaddiction import MyBakingAddiction
 from .paninihappy import PaniniHappy
 from .realsimple import RealSimple
+from .seriouseats import SeriousEats
 from .simplyrecipes import SimplyRecipes
 from .steamykitchen import SteamyKitchen
 from .taste import Taste
@@ -53,6 +54,7 @@ SCRAPERS.update(dict.fromkeys(JamieOliver.host(), JamieOliver))
 SCRAPERS.update(dict.fromkeys(MyBakingAddiction.host(), MyBakingAddiction))
 SCRAPERS.update(dict.fromkeys(PaniniHappy.host(), PaniniHappy))
 SCRAPERS.update(dict.fromkeys(RealSimple.host(), RealSimple))
+SCRAPERS.update(dict.fromkeys(SeriousEats.host(), SeriousEats))
 SCRAPERS.update(dict.fromkeys(SimplyRecipes.host(), SimplyRecipes))
 SCRAPERS.update(dict.fromkeys(SteamyKitchen.host(), SteamyKitchen))
 SCRAPERS.update(dict.fromkeys(Taste.host(), Taste))
