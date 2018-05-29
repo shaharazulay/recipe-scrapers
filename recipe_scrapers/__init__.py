@@ -11,6 +11,7 @@ from .bonappetit import BonAppetit
 from .budgetbytes import BudgetBytes
 from .closetcooking import ClosetCooking
 from .cookstr import Cookstr
+from .eatsmarter import EatSmarter
 from .epicurious import Epicurious
 from .finedininglovers import FineDiningLovers
 from .foodrepublic import FoodRepublic
@@ -42,6 +43,7 @@ SCRAPERS.update(dict.fromkeys(BonAppetit.host(), BonAppetit))
 SCRAPERS.update(dict.fromkeys(BudgetBytes.host(), BudgetBytes))
 SCRAPERS.update(dict.fromkeys(ClosetCooking.host(), ClosetCooking))
 SCRAPERS.update(dict.fromkeys(Cookstr.host(), Cookstr))
+SCRAPERS.update(dict.fromkeys(EatSmarter.host(), EatSmarter))
 SCRAPERS.update(dict.fromkeys(Epicurious.host(), Epicurious))
 SCRAPERS.update(dict.fromkeys(FineDiningLovers.host(), FineDiningLovers))
 SCRAPERS.update(dict.fromkeys(FoodRepublic.host(), FoodRepublic))
