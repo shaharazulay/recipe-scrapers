@@ -12,7 +12,7 @@ class EatSmarter(AbstractScraper):
         return self.soup.find('meta', {'property': 'og:title'})['content']
 
     def categories(self):
-        categories_html = self.soup.findAll('u1', {'class': 'tag-cloud-list'}).findAll('a')
+        categories_html = self.soup.find('ul', {'class': 'tag-cloud-list'}).findAll('a')
         return [
             normalize_string(category.get_text())
             for category in categories_html
