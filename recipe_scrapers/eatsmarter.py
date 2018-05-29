@@ -17,4 +17,6 @@ class EatSmarter(AbstractScraper):
             normalize_string(category.get_text())
             for category in categories_html
         ]
-    
+
+    def rating(self):
+        return self.soup.find('span', {'class': 'average-rating'}).find('span').get_text()    
