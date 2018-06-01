@@ -8,7 +8,7 @@ class AllRecipes(AbstractScraper):
 
     @classmethod
     def host(self):
-        return 'allrecipes.com'
+        return ['allrecipes.com']
 
     def title(self):
         return self.soup.find('h1').get_text()
