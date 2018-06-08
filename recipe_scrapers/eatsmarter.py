@@ -20,3 +20,7 @@ class EatSmarter(AbstractScraper):
 
     def rating(self):
         return self.soup.find('span', {'class': 'average-rating'}).find('span').get_text()    
+
+    def image_url(self):
+        image_html = self.soup.find('meta', {'property': 'og:image'})
+        return image_html['content']

@@ -40,3 +40,6 @@ class FoodNetwork(AbstractScraper):
             for category in categories_html
         ]
     
+    def image_url(self):
+        image_html = self.soup.find('meta', {'property': 'og:image'})
+        return image_html['content']

@@ -45,7 +45,11 @@ class AllRecipes(AbstractScraper):
         rating_html = self.soup.find('meta', {'property': 'og:rating'})
         return rating_html['content']
     
+    def image_url(self):
+        image_html = self.soup.find('meta', {'property': 'og:image'})
+        return image_html['content']
 
+    
 class AllRecipesUKAsia(AbstractScraper):
 
     @classmethod

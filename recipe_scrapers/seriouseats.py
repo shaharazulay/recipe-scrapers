@@ -23,3 +23,7 @@ class SeriousEats(AbstractScraper):
 
     def review_count(self):
         return self.soup.find('meta', {'itemprop': 'reviewCount'})['content']
+
+    def image_url(self):
+        image_html = self.soup.find('meta', {'property': 'og:image'})
+        return image_html['content']

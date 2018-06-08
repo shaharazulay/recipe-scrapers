@@ -35,3 +35,6 @@ class Taste(AbstractScraper):
             for c in category['content'].split(',')
         ]
     
+    def image_url(self):
+        image_html = self.soup.find('meta', {'property': 'og:image'})
+        return image_html['content']
