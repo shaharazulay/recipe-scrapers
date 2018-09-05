@@ -21,7 +21,7 @@ class SeriousEats(AbstractScraper):
     def rating(self):
         return self.soup.find('meta', {'itemprop': 'ratingValue'})['content']
 
-    def review_count(self):
+    def review_num(self):
         return self.soup.find('meta', {'itemprop': 'reviewCount'})['content']
 
     def image_url(self):

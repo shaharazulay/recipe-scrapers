@@ -41,6 +41,9 @@ class Epicurious(AbstractScraper):
     def rating(self):
         return self.soup.find('span', {'class': 'rating'}).get_text()
         
+    def review_num(self):
+        return self.soup.find('span', {'class': 'reviews-count'}).get_text()
+    
     def image_url(self):
         image_html = self.soup.find('meta', {'property': 'og:image'})
         return image_html['content']

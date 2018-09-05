@@ -44,6 +44,10 @@ class AllRecipes(AbstractScraper):
     def rating(self):
         rating_html = self.soup.find('meta', {'property': 'og:rating'})
         return rating_html['content']
+
+    def review_num(self):
+        review_html = self.soup.find('meta', {'itemprop': 'reviewCount'})
+        return review_html['content']
     
     def image_url(self):
         image_html = self.soup.find('meta', {'property': 'og:image'})
